@@ -33,7 +33,19 @@ def play_round(player1_hand, player2_hand):
 		if both players flip the same value card, call the war function
 	"""
     # Your code here
-
+    p1_card = player1_hand.pop(0)
+    p2_card = player2_hand.pop(0)
+    result = card_comparison(p1_card,p2_card)
+    if result == 1:
+        player1_hand.append(p1_card)
+        player1_hand.append(p2_card)
+    elif result == 2:
+        player2_hand.append(p2_card)
+        player2_hand.append(p1_card)
+    else:
+        player1_hand.append(p1_card)
+        player2_hand.append(p2_card)
+        war(player1_hand,player2_hand)
 def war(player1_hand, player2_hand):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
@@ -41,10 +53,12 @@ def war(player1_hand, player2_hand):
 		card takes all the cards.		
 	"""
     # Your code here
-
+    p1_card = player1_hand[-1]
+    p2_card = player2_hand[-1]
 def play_game():
     """Main function to run the game."""
     # Your code here
-
+    while len(hand1)>0 and len(hand2)>0:
+        play_round(player1_hand,player2_hand)
 # Call the main function to start the game
 play_game()
