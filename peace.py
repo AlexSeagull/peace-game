@@ -6,13 +6,14 @@ ranks = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A")
 suits = ("hearts", "diamonds", "clubs", "spades")
 
 # Create a deck of cards
-deck = ...
+deck = [(rank,suit) for rank in ranks for suit in suits]
 
 # Shuffle the deck 
-
+random.shuffle(deck)
 
 # Split the deck into two hands
-
+hand1 = deck[0:26]
+hand2 = deck[26:]
 def card_comparison(p1_card, p2_card):
     """This is the logic that compares two cards to find the stronger card
 		Return 1 if player 1's card is strong, 2 for player 2
@@ -20,7 +21,12 @@ def card_comparison(p1_card, p2_card):
 
 		Hint, using the index function will make this very simple (one liner)"""
     # Your code here
-
+    if ranks.index(p1_card[0])>ranks.index(p2_card[0]):
+        return 1
+    elif ranks.index(p1_card[0])<ranks.index(p2_card[0]):
+        return 2
+    else:
+        return 0
 def play_round(player1_hand, player2_hand):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
