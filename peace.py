@@ -12,8 +12,10 @@ deck = [(rank,suit) for rank in ranks for suit in suits]
 random.shuffle(deck)
 
 # Split the deck into two hands
-hand1 = deck[0:26]
-hand2 = deck[26:]
+player1_hand = deck[0:26]
+player2_hand = deck[26:]
+
+war_list =[]
 def card_comparison(p1_card, p2_card):
     """This is the logic that compares two cards to find the stronger card
 		Return 1 if player 1's card is strong, 2 for player 2
@@ -27,7 +29,7 @@ def card_comparison(p1_card, p2_card):
         return 2
     else:
         return 0
-def play_round(player1_hand, player2_hand):
+def play_round(player1_hand, player2_hand,war_list):
     """Play a single round of the game.
 		That is, each player flips a card, and the winner is determined using the card_comparison function
 		if both players flip the same value card, call the war function
@@ -35,6 +37,8 @@ def play_round(player1_hand, player2_hand):
     # Your code here
     p1_card = player1_hand.pop(0)
     p2_card = player2_hand.pop(0)
+    print(p1_card)
+    print(p2_card)
     result = card_comparison(p1_card,p2_card)
     if result == 1:
         player1_hand.append(p1_card)
@@ -43,22 +47,50 @@ def play_round(player1_hand, player2_hand):
         player2_hand.append(p2_card)
         player2_hand.append(p1_card)
     else:
-        player1_hand.append(p1_card)
-        player2_hand.append(p2_card)
-        war(player1_hand,player2_hand)
-def war(player1_hand, player2_hand):
+        war_list.insert(0,p1_card)
+        war_list.insert(0,p2_card)
+        war(player1_hand,player2_hand,war_list)
+    print(len(player1_hand))
+    print(len(player2_hand))
+    return player1_hand, player2_hand
+def war(player1_hand, player2_hand,war_list):
     """Handle the 'war' scenario when cards are equal.
 		recall the rules of war, both players put 3 cards face down, 
 		then both players flip face up a 4th card. The player with the stronger
 		card takes all the cards.		
 	"""
     # Your code here
-    p1_card = player1_hand[-1]
-    p2_card = player2_hand[-1]
+    if len(player1_hand) <5:
+        player1_hand = []
+        return player1_hand
+    elif len(player2_hand) <5:
+        player2_hand = []
+        return player2_hand
+    else:
+        war_list.append(player1_hand.pop(0) for _ in range(4))
+        war_list.append(player2_hand.pop(0) for _ in range(4))
+        p1_card = player1_hand.pop(0)
+        p2_card = player2_hand.pop(0)
+        result = card_comparison(p1_card,p2_card)
+        if result == 1:
+            player1_hand.append(p1_card)
+            player1_hand.append(p2_card)
+            player1_hand.append(war_list)
+            war_list = []
+        elif result == 2:
+            player2_hand.append(p2_card)
+            player2_hand.append(p1_card)
+            player2_hand.append(war_list)
+            war_list=[]
+        else:
+            war_list.insert(0,p1_card)
+            war_list.insert(0,p2_card)
+            war(player1_hand,player2_hand,war_list)
+    return war_list, player1_hand, player2_hand
 def play_game():
     """Main function to run the game."""
     # Your code here
-    while len(hand1)>0 and len(hand2)>0:
-        play_round(player1_hand,player2_hand)
+    while len(player1_hand)>0 and len(player2_hand)>0:
+        play_round(player1_hand,player2_hand,war_list)
 # Call the main function to start the game
 play_game()
