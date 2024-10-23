@@ -60,32 +60,31 @@ def war(player1_hand, player2_hand,war_list):
 		card takes all the cards.		
 	"""
     # Your code here
-    if len(player1_hand) <5:
-        player1_hand = []
-        return player1_hand
-    elif len(player2_hand) <5:
-        player2_hand = []
-        return player2_hand
-    else:
-        war_list.append(player1_hand.pop(0) for _ in range(4))
-        war_list.append(player2_hand.pop(0) for _ in range(4))
-        p1_card = player1_hand.pop(0)
-        p2_card = player2_hand.pop(0)
-        result = card_comparison(p1_card,p2_card)
-        if result == 1:
-            player1_hand.append(p1_card)
-            player1_hand.append(p2_card)
-            player1_hand.append(war_list)
-            war_list = []
-        elif result == 2:
-            player2_hand.append(p2_card)
-            player2_hand.append(p1_card)
-            player2_hand.append(war_list)
-            war_list=[]
+    war_list = []
+    result = 0
+    while result != 1 and result != 2:
+        if len(player1_hand) <5:
+            player1_hand = []
+            return player1_hand
+        elif len(player2_hand) <5:
+            player2_hand = []
+            return player2_hand
         else:
-            war_list.insert(0,p1_card)
-            war_list.insert(0,p2_card)
-            war(player1_hand,player2_hand,war_list)
+            war_list += [player1_hand.pop(0) for _ in range(4)]
+            war_list += [player2_hand.pop(0) for _ in range(4)]
+            p1_card = player1_hand.pop(0)
+            print(p1_card)
+            p2_card = player2_hand.pop(0)
+            print(p2_card)
+            result = card_comparison(p1_card,p2_card)
+            if result == 1:
+                player1_hand.append(p1_card)
+                player1_hand.append(p2_card)
+                player1_hand.extend(war_list)
+            elif result == 2:
+                player2_hand.append(p2_card)
+                player2_hand.append(p1_card)
+                player2_hand.extend(war_list)
     return war_list, player1_hand, player2_hand
 def play_game():
     """Main function to run the game."""
