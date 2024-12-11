@@ -64,12 +64,18 @@ def war(player1_hand, player2_hand,war_list,p1_card,p2_card):
     war_list.insert(0,p1_card)
     while result != 1 and result != 2:
         if len(player1_hand) <5:
-            #player2_hand.extend(player1_hand)
+            player2_hand.extend(player1_hand)
+            player2_hand.append(p1_card)
+            player2_hand.append(p2_card)
             player1_hand = []
+            result = 0
             return player1_hand, player2_hand
         elif len(player2_hand) <5:
-            #player1_hand.extend(player2_hand)
+            player1_hand.append(p1_card)
+            player1_hand.append(p2_card)
+            player1_hand.extend(player2_hand)
             player2_hand = []
+            result = 0
             return player2_hand, player1_hand
         else:
             war_list += [player1_hand.pop(0) for _ in range(3)]
@@ -96,5 +102,9 @@ def play_game():
     # Your code here
     while len(player1_hand)>0 and len(player2_hand)>0:
         play_round(player1_hand,player2_hand,war_list)
+    if len(player1_hand) == 0:
+        print("Player 2 wins")
+    else:
+        print("Player 1 wins")
 # Call the main function to start the game
 play_game()
