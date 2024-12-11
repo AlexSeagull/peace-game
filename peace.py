@@ -64,18 +64,14 @@ def war(player1_hand, player2_hand,war_list,p1_card,p2_card):
     war_list.insert(0,p1_card)
     while result != 1 and result != 2:
         if len(player1_hand) <5:
-            player2_hand.extend(player1_hand)
-            player2_hand.append(p1_card)
-            player2_hand.append(p2_card)
-            player1_hand = []
-            result = 0
+            for x in range( len(player1_hand)):
+                player2_hand.append(player1_hand.pop(0))
+            player2_hand.extend(war_list)
             return player1_hand, player2_hand
         elif len(player2_hand) <5:
-            player1_hand.append(p1_card)
-            player1_hand.append(p2_card)
-            player1_hand.extend(player2_hand)
-            player2_hand = []
-            result = 0
+            for x in range(len(player2_hand)):
+                player1_hand.append(player2_hand.pop(0))
+            player1_hand.extend(war_list)
             return player2_hand, player1_hand
         else:
             war_list += [player1_hand.pop(0) for _ in range(3)]
